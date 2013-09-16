@@ -1,0 +1,26 @@
+<div class="modal-dialog">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>Add a class</h2>
+    </div>
+    <div class="modal-body">
+      <form role="form">
+        <div class="form-group">
+          <label>Course Name</label>
+          <input class="form-control" type="text" ng-model="course.name" placeholder="Example: CPT">
+        </div>
+        <div class="form-group">
+          <label>Course Number</label>
+          <input class="form-control" type="text" ng-model="course.number" placeholder="Example: 101">
+        </div>
+        <div class="form-group">
+          <label>Course Description</label>
+          <textarea class="form-control" type="text" ng-model="course.description"></textarea>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button class="btn" ng-click="add(course)">Add Class</button>
+    </div>
+  </div>
+</div>
