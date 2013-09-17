@@ -1,8 +1,8 @@
 angular.module('SchoolApp')
   .controller('PanelCtrl', function($scope, $http, $dialog) {
-    $http.get('/api/classes')
-      .success(function(classes) {
-        $scope.classes = classes;
+    $http.get('/api/course/list')
+      .success(function(courseList) {
+        $scope.courseList = courseList;
       });
     $scope.addClass = function() {
       $dialog.dialog().open(

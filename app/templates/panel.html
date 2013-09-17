@@ -3,6 +3,16 @@
     <button class="btn" ng-click="addClass()">Add Class</button>
   </div>
   <div class="col-md-9">
-    <h2>Hello World</h2>
+    <h2>Class List</h2>
+    <table class="table table-striped">
+      <tr>
+        <th>Class</th>
+        <th>Description</th>
+      </tr>
+      <tr ng-repeat="course in courseList">
+        <td>{{course.name + " " + course.number}}</td>
+        <td>{{course.description}}</td>
+      </tr>
+    </table> 
   </div>
 </div>

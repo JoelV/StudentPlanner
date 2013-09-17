@@ -11,7 +11,7 @@ module.exports = function(config) {
       'public/bower_components/jquery/jquery.js',
       'public/bower_components/angular/angular.js',
       'public/bower_components/angular-mocks/angular-mocks.js',
-      'public/bower_components/angular-ui-bootstrap-bower/ui-bootstrap-tpls.js',
+      'public/bower_components/angular-ui-bootstrap-bower/ui-bootstrap.js',
       'public/js/ng-app.js',
       'test/**/*.js'
     ],

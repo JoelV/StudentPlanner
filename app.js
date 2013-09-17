@@ -1,5 +1,6 @@
 var nano = require('nano');
 var express = require('express');
+var _ = require('underscore');
 
 var app = express();
 var studentplannerdb = nano('http://localhost:5984/studentplannerdb');
@@ -17,6 +18,12 @@ app.put('/api/add/class', function(req, res) {
   studentplannerdb.insert(req.body, function(err, body) {
     if(err) { res.send(500, err); }
     res.send(200);
+  });
+});
+app.get('/api/course/list', function(req, res) {
+  studentplannerdb.view('classList', 'all', function(err, body) {
+    if(err) { res.send(500, err); }
+    res.send(200, _.pluck(body.rows,'value'));
   });
 });
 //resources
