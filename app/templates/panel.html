@@ -1,17 +1,19 @@
 <div class="row">
-  <div class="col-md-3">
+  <div class="col-md-2">
     <button class="btn" ng-click="addClass()">Add Class</button>
   </div>
-  <div class="col-md-9">
+  <div class="col-md-10">
     <h2>Class List</h2>
     <table class="table table-striped">
       <tr>
         <th>Class</th>
         <th>Description</th>
+        <th>Delete</th>
       </tr>
       <tr ng-repeat="course in courseList">
         <td>{{course.name + " " + course.number}}</td>
         <td>{{course.description}}</td>
+        <td><button class="btn btn-danger" ng-click="remove(course, $index)">Delete</button>
       </tr>
     </table> 
   </div>

@@ -1,5 +1,5 @@
 angular.module('SchoolApp')
-  .controller('PanelCtrl', function($scope, $http, $dialog) {
+  .controller('PanelCtrl', function($scope, $http, $dialog, $window) {
     $http.get('/api/course/list')
       .success(function(courseList) {
         $scope.courseList = courseList;
@@ -9,5 +9,13 @@ angular.module('SchoolApp')
         'app/templates/dialogs/addClass.html',
         'AddClassCtrl'
         );
+    };
+    $scope.remove = function(course, index) {
+      if(confirm("Are you sure?")) {
+        $http['delete']('/api/course/delete/' + course._id, {params: {rev: course._rev}})
+          .success(function() {
+            $scope.courseList.splice(index, 1);
+          });
+      }
     };
   });
