@@ -5,7 +5,7 @@ module.exports = function(grunt) {
     },
     concat: {
       dist: {
-        src: ['app/app.js', 'app/controllers/**/*.js', 'app/services/**/*.js'],
+        src: ['app/app.js', 'app/**/*.js'],
         dest: 'public/js/ng-app.js'
       }
     },

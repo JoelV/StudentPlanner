@@ -19,7 +19,6 @@ app.put('/api/add/class', function(req, res) {
 });
 
 app.put('/api/assignment/add', function(req, res) {
-  console.log(req.body);
   studentplannerdb.insert(req.body).pipe(res);
 });
 

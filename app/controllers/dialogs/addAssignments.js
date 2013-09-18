@@ -6,7 +6,6 @@ angular.module('SchoolApp')
     };
 
     $scope.add = function(assignment) {
-      console.log("here");
       assignment.course = {};
       assignment.course.name = $scope.course.name;
       assignment.course.number = $scope.course.number; 
