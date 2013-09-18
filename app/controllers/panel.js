@@ -1,5 +1,5 @@
 angular.module('SchoolApp')
-  .controller('PanelCtrl', function($scope, $http, $dialog, $window) {
+  .controller('PanelCtrl', function($scope, $http, $dialog, $window, $course) {
     $http.get('/api/course/list')
       .success(function(courseList) {
         $scope.courseList = courseList;
@@ -17,5 +17,12 @@ angular.module('SchoolApp')
             $scope.courseList.splice(index, 1);
           });
       }
+    };
+    $scope.addAssignments = function(course) {
+      $course.setCourse(course);
+      $dialog.dialog().open(
+        'app/templates/dialogs/addAssignments.html',
+        'AddAssignmentsCtrl'
+        );
     };
   });

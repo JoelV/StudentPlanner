@@ -8,12 +8,14 @@
       <tr>
         <th>Class</th>
         <th>Description</th>
+        <th>Add Assignments</th>
         <th>Delete</th>
       </tr>
       <tr ng-repeat="course in courseList">
         <td>{{course.name + " " + course.number}}</td>
         <td>{{course.description}}</td>
-        <td><button class="btn btn-danger" ng-click="remove(course, $index)">Delete</button>
+        <td><button class="btn" ng-click="addAssignments(course)">Add Assignments</button></td>
+        <td><button class="btn btn-danger" ng-click="remove(course, $index)">Delete</button></td>
       </tr>
     </table> 
   </div>

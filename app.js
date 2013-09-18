@@ -18,6 +18,11 @@ app.put('/api/add/class', function(req, res) {
   studentplannerdb.insert(req.body).pipe(res);
 });
 
+app.put('/api/assignment/add', function(req, res) {
+  console.log(req.body);
+  studentplannerdb.insert(req.body).pipe(res);
+});
+
 app.get('/api/course/list', function(req, res) {
   studentplannerdb.view('classList', 'all', function(err, body) {
     if(err) { res.send(500, err); }
