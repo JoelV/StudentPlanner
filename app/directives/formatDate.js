@@ -11,7 +11,7 @@ angular.module('SchoolApp')
       require: 'ngModel',
       link: function(scope, element, attrs, modelCtrl) {
         function formatDate(input) {
-          //console.log('wtf ' + sep);
+          //console.log(sep);
           var sep = attrs.formatDate;
           if(typeof input === 'undefined') return input;
           if(input.length === 8 && (input.charAt(2) !== sep || input.charAt(5) !== sep)) {

@@ -5,15 +5,17 @@
       </div>
       <div class="modal-body">
         <form role="form" name="addForm" novalidate>
-          <div class="form-group">
+          <div class="form-group" ng-class="{'has-success': addForm.name.$valid, 'has-error': addForm.name.$invalid}">
             <label>Assignment</label>
             <input class="form-control" type="text" ng-model="assignment.name"
-                   placeholder="Example: Read Chapter/Assignment" required>
+                   placeholder="Example: Read Chapter/Assignment" name="name" 
+                   ng-pattern="/^[A-Za-z0-9]{3,}$/"required>
           </div> 
-          <div class="form-group">
+          <div class="form-group"  ng-class="{'has-success': addForm.date.$valid, 'has-error': addForm.date.$invalid}">
             <label>Due Date</label>
             <input class="form-control" type="date" ng-model="assignment.date"
-                   placeholder="MM-DD-YYYY" format-date="-" required>
+                   name="date" placeholder="MM-DD-YYYY" format-date="-" 
+                   valid-date="-" required>
           </div>
         </form>
       </div>

@@ -14,9 +14,12 @@ describe('Directive: validDate', function() {
     $scope.$digest();
     form = $scope.form;
   }));
-  it('should validate date', function() {
-    form.input.$setViewValue('09-092013');
-    expect(form.input.$valid).toBe(false);
+  it('should expect 19-19-2013 to be invalid', function() {
+    form.input.$setViewValue('19-19-2013');
+    expect(form.input.$invalid).toBe(true);
   });
-
-})
+  it('should expect 09-09-2013 to be valid', function() {
+    form.input.$setViewValue('09-09-2013');
+    expect(form.input.$valid).toBe(true);
+  });
+});
