@@ -4,23 +4,30 @@
       <h2>Add a class</h2>
     </div>
     <div class="modal-body">
-      <form role="form">
-        <div class="form-group">
+      <form role="form" name="addClass" novalidate>
+        <div class="form-group" ng-class="{'has-success': addClass.name.$valid, 
+                                           'has-error': addClass.name.$invalid}">
           <label>Course Name</label>
-          <input class="form-control" type="text" ng-model="course.name" placeholder="Example: CPT">
+          <input class="form-control" type="text" ng-model="course.name" placeholder="Example: CPT"
+                 name="name" ng-pattern="/^[A-Za-z]{3,4}$/" required>
         </div>
-        <div class="form-group">
+        <div class="form-group" ng-class="{'has-success': addClass.number.$valid,
+                                           'has-error': addClass.number.$invalid}">
           <label>Course Number</label>
-          <input class="form-control" type="text" ng-model="course.number" placeholder="Example: 101">
+          <input class="form-control" type="text" ng-model="course.number" placeholder="Example: 101"
+                 name="number" ng-pattern="/^[1-4][0-9]{2}$/"required>
         </div>
-        <div class="form-group">
+        <div class="form-group" ng-class="{'has-success': addClass.description.$valid,
+                                           'has-error': addClass.description.$invalid}">
           <label>Course Description</label>
-          <textarea class="form-control" type="text" ng-model="course.description"></textarea>
+          <textarea class="form-control" type="text" ng-model="course.description" 
+                    placeholder="Example: Javascript Programming" 
+                    ng-pattern="/^.{3,}$/" name="description" required></textarea>
         </div>
       </form>
     </div>
     <div class="modal-footer">
-      <button class="btn" ng-click="add(course)">Add Class</button>
+      <button class="btn" ng-click="add(course)" ng-disabled="addClass.$invalid">Add Class</button>
       <button class="btn" ng-click="cancel()">Cancel</button>
     </div>
   </div>
