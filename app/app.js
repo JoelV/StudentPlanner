@@ -6,6 +6,10 @@ angular.module('SchoolApp', ['ui.bootstrap'])
       controller: 'PanelCtrl',
       templateUrl: '/app/templates/panel.html'
     })
+    .when('/assignments/:className', {
+      controller: 'AssignmentCtrl',
+      templateUrl: '/app/templates/assignments.html' 
+    })
     ;
     $locationProvider.html5Mode(true);
   });

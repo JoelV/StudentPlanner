@@ -32,6 +32,15 @@ app.get('/api/course/list', function(req, res) {
 app.del('/api/course/delete/:id', function(req, res) {
   studentplannerdb.destroy(req.params.id, req.query.rev).pipe(res); 
 });
+
+app.get('/api/assignment/list/:className', function(req, res) {
+  studentplannerdb.view('assignment', 'all', function(err, body){
+    if(err) { res.send(500, err); }
+    //var assignmentList = _.chain(body.rows).where({key: req.params.className}).pluck('value').value(); 
+    //console.log(assignmentList);
+    res.send(200, _.chain(body.rows).where({key: req.params.className}).pluck('value').value());
+  });
+});
 //resources
 app.get('/app/templates/*', function(req, res) {
   res.sendfile(__dirname + req.url);

@@ -25,4 +25,7 @@ angular.module('SchoolApp')
         'AddAssignmentsCtrl'
         );
     };
+    $scope.listCourse = function(course) {
+      console.log('here');  
+    };
   });

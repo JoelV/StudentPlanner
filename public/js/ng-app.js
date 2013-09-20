@@ -6,8 +6,20 @@ angular.module('SchoolApp', ['ui.bootstrap'])
       controller: 'PanelCtrl',
       templateUrl: '/app/templates/panel.html'
     })
+    .when('/assignments/:className', {
+      controller: 'AssignmentCtrl',
+      templateUrl: '/app/templates/assignments.html' 
+    })
     ;
     $locationProvider.html5Mode(true);
+  });
+angular.module('SchoolApp')
+  .controller('AssignmentCtrl', function($scope, $routeParams, $http) {
+    $scope.className = $routeParams.className;
+    $http.get('/api/assignment/list/' + $routeParams.className)
+      .success(function(assignmentList) {
+        $scope.assignmentList = assignmentList;
+      });
   });
 angular.module('SchoolApp')
   .controller('AddAssignmentsCtrl', function($scope, dialog, $course, $http) {
@@ -69,6 +81,9 @@ angular.module('SchoolApp')
         'app/templates/dialogs/addAssignments.html',
         'AddAssignmentsCtrl'
         );
+    };
+    $scope.listCourse = function(course) {
+      console.log('here');  
     };
   });
 angular.module('SchoolApp')
