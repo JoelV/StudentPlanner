@@ -23,6 +23,9 @@ describe('Controller: AssignmentCtrl', function() {
   it('should have a courseList array with length 2', function() {
     expect(scope.assignmentList.length).toEqual(2);
   });
+  it('shoould have a method called edit', function() {
+    expect(scope.edit).toBeDefined();
+  });
 
 });
 

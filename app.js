@@ -41,6 +41,10 @@ app.get('/api/assignment/list/:className', function(req, res) {
     res.send(200, _.chain(body.rows).where({key: req.params.className}).pluck('value').value());
   });
 });
+
+app.put('/api/assignment/edit', function(req, res) {
+  studentplannerdb.insert(req.body).pipe(res);
+});
 //resources
 app.get('/app/templates/*', function(req, res) {
   res.sendfile(__dirname + req.url);

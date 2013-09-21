@@ -8,10 +8,12 @@
       <tr>
         <th>Assignment Name</th>
         <th>Due Date</th>
+        <th>Edit</th>
       </tr>
       <tr ng-repeat="assignment in assignmentList">
         <td>{{assignment.name}}</td>
         <td>{{assignment.date}}</td>
+        <td><button class="btn btn-info" ng-click="edit(assignment)">Edit</button></td>
       </tr>
     </table>
   </div>

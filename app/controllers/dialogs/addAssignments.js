@@ -1,6 +1,7 @@
 angular.module('SchoolApp')
-  .controller('AddAssignmentsCtrl', function($scope, dialog, $course, $http) {
+  .controller('AddAssignmentsCtrl', function($scope, dialog, $course, $http, $mode) {
     $scope.course = $course.getCourse();
+    $scope.mode = $mode.getMode();
     $scope.close = function() {
       dialog.close();
     };

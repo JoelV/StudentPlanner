@@ -1,7 +1,7 @@
 <div class="modal-dialog">
   <div class="modal-content">
       <div class="modal-header">
-        <h4>Add Assignments</h4>
+        <h4>{{mode}} Assignments</h4>
       </div>
       <div class="modal-body">
         <form role="form" name="addForm" novalidate>
@@ -20,7 +20,7 @@
         </form>
       </div>
       <div class="modal-footer">
-        <button class="btn" ng-click="add(assignment)" ng-disabled="addForm.$invalid">Add</button>
+        <button class="btn" ng-click="add(assignment)" ng-disabled="addForm.$invalid">Save</button>
         <button class="btn" ng-click="close()">Close</button>
       </div>
   </div>
