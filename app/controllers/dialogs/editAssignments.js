@@ -9,6 +9,8 @@ angular.module('SchoolApp')
 
     //save button
     $scope.add = function(assignment) {
+      //var date = moment(assignment.date).toISOString();
+      //assignment.date = date;
       $http.put('/api/assignment/edit', assignment)
         .success(function() {
           dialog.close();

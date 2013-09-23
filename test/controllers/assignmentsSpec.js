@@ -26,6 +26,12 @@ describe('Controller: AssignmentCtrl', function() {
   it('shoould have a method called edit', function() {
     expect(scope.edit).toBeDefined();
   });
+  it('should have a method called addAssignmnets', function() {
+    expect(scope.addAssignments).toBeDefined();
+  });
+  it('should have a method called delete', function() {
+    expect(scope.delete).toBeDefined();
+  });
 
 });
 

@@ -42,6 +42,9 @@ app.get('/api/assignment/list/:className', function(req, res) {
   });
 });
 
+app.del('/api/assignment/delete/:id', function(req, res) {
+  studentplannerdb.destroy(req.params.id, req.query.rev).pipe(res);
+});
 app.put('/api/assignment/edit', function(req, res) {
   studentplannerdb.insert(req.body).pipe(res);
 });

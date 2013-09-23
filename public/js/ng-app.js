@@ -14,7 +14,8 @@ angular.module('SchoolApp', ['ui.bootstrap'])
     $locationProvider.html5Mode(true);
   });
 angular.module('SchoolApp')
-  .controller('AssignmentCtrl', function($scope, $routeParams, $http, $dialog, $mode, $assignment) {
+  .controller('AssignmentCtrl', function($scope, $routeParams, $http, $dialog, $mode, $assignment, 
+                                         $from, $course) {
     $scope.className = $routeParams.className;
     $http.get('/api/assignment/list/' + $routeParams.className)
       .success(function(assignmentList) {
@@ -28,13 +29,37 @@ angular.module('SchoolApp')
         'EditAssignmentsCtrl'
         );   
     };
+    $scope.addAssignments = function() {
+      var course = $routeParams.className;
+      var courseArry = course.split('-');
+      var c = {};
+      c.name = courseArry[0];
+      c.number = courseArry[1];
+      $course.setCourse(c);
+      $mode.setMode('Add');
+      $from.setFrom('assignments');
+      $dialog.dialog().open(
+        '../app/templates/dialogs/assignmentsForm.html',
+        'AddAssignmentsCtrl'
+        );
+    };
+    $scope.delete = function(assignment, index) {
+      if(confirm('Are you sure?')) {
+        $http['delete']('/api/assignment/delete/' + assignment._id, {params: {rev: assignment._rev}})
+          .success(function() {
+            $scope.assignmentList.splice(index, 1);
+          }); 
+      }  
+    };
   });
 angular.module('SchoolApp')
-  .controller('AddAssignmentsCtrl', function($scope, dialog, $course, $http, $mode) {
+  .controller('AddAssignmentsCtrl', function($scope, dialog, $course, $http, $mode, $from, $window) {
     $scope.course = $course.getCourse();
     $scope.mode = $mode.getMode();
     $scope.close = function() {
       dialog.close();
+      if($from.getFrom() === 'assignments')  
+        $window.location.href = '/assignments/' + $scope.course.name + '-' + $scope.course.number;
     };
 
     $scope.add = function(assignment) {
@@ -42,6 +67,8 @@ angular.module('SchoolApp')
       assignment.course.name = $scope.course.name;
       assignment.course.number = $scope.course.number; 
       assignment.type = 'assignment';
+      var date = moment(assignment.date, 'MM-DD-YYYY').toISOString();
+      assignment.date = date;
       $http.put('/api/assignment/add', assignment)
         .success(function() {
           $scope.assignment.name = "";
@@ -75,6 +102,8 @@ angular.module('SchoolApp')
 
     //save button
     $scope.add = function(assignment) {
+      //var date = moment(assignment.date).toISOString();
+      //assignment.date = date;
       $http.put('/api/assignment/edit', assignment)
         .success(function() {
           dialog.close();
@@ -190,6 +219,18 @@ angular.module('SchoolApp')
       },
       getCourse: function() {
         return course;
+      }
+    };
+  });
+angular.module('SchoolApp')
+  .factory('$from', function() {
+    var from;
+    return {
+      setFrom: function(f) {
+        from = f;
+      },
+      getFrom: function() {
+        return from;
       }
     };
   });

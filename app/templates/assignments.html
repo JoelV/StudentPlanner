@@ -1,6 +1,6 @@
 <div class="container">
   <div class="col-md-2">
-    <button class="btn">Add Assignments</button>
+    <button class="btn btn-info" ng-click="addAssignments()">Add Assignments</button>
   </div>
   <div class="col-md-10">
     <h4>Class: {{className}}</h4>
@@ -9,11 +9,13 @@
         <th>Assignment Name</th>
         <th>Due Date</th>
         <th>Edit</th>
+        <th>Delete</th>
       </tr>
       <tr ng-repeat="assignment in assignmentList">
         <td>{{assignment.name}}</td>
-        <td>{{assignment.date}}</td>
+        <td>{{assignment.date | date: "MM-dd-yyyy"}}</td>
         <td><button class="btn btn-info" ng-click="edit(assignment)">Edit</button></td>
+        <td><button class="btn btn-danger" ng-click="delete(assignment, $index)">Delete</button></td>
       </tr>
     </table>
   </div>
