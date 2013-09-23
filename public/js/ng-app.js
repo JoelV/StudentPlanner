@@ -17,6 +17,7 @@ angular.module('SchoolApp')
   .controller('AssignmentCtrl', function($scope, $routeParams, $http, $dialog, $mode, $assignment, 
                                          $from, $course) {
     $scope.className = $routeParams.className;
+    $scope.sort='date';
     $http.get('/api/assignment/list/' + $routeParams.className)
       .success(function(assignmentList) {
         $scope.assignmentList = assignmentList;
