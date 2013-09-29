@@ -14,6 +14,10 @@ angular.module('SchoolApp', ['ui.bootstrap', 'ui.calendar'])
       controller: 'CalendarCtrl',
       templateUrl: '/app/templates/calendar.html'
     })
+    .when('/' , {
+      controller: 'CalendarCtrl',
+      templateUrl: '/app/templates/calendar.html'
+    })
     ;
     $locationProvider.html5Mode(true);
   });
@@ -76,10 +80,10 @@ angular.module('SchoolApp')
     $scope.eventChanged = 0;
     $scope.uiConfig = {
       calendar:{
-        height: 250,
+        height: 600,
         editable: false,
         header:{
-          left: 'month basicWeek basicDay agendaWeek agendaDay',
+          left: 'month basicWeek basicDay',
           center: 'title',
           right: 'today prev,next'
         },

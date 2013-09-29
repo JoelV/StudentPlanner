@@ -14,6 +14,10 @@ angular.module('SchoolApp', ['ui.bootstrap', 'ui.calendar'])
       controller: 'CalendarCtrl',
       templateUrl: '/app/templates/calendar.html'
     })
+    .when('/' , {
+      controller: 'CalendarCtrl',
+      templateUrl: '/app/templates/calendar.html'
+    })
     ;
     $locationProvider.html5Mode(true);
   });
