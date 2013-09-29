@@ -36,10 +36,12 @@ app.del('/api/course/delete/:id', function(req, res) {
 app.get('/api/assignment/list/:className', function(req, res) {
   studentplannerdb.view('assignment', 'all', function(err, body){
     if(err) { res.send(500, err); }
-    //var assignmentList = _.chain(body.rows).where({key: req.params.className}).pluck('value').value(); 
-    //console.log(assignmentList);
     res.send(200, _.chain(body.rows).where({key: req.params.className}).pluck('value').value());
   });
+});
+
+app.get('/api/assignments/all', function(req, res) {
+  studentplannerdb.view('assignment', 'all').pipe(res);
 });
 
 app.del('/api/assignment/delete/:id', function(req, res) {
