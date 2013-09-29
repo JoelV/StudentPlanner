@@ -4,6 +4,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>School Planner</title>
   <link type="text/css" rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.css">
+  <link type="text/css" rel="stylesheet" href="/bower_components/fullcalendar/fullcalendar.css">
   <style type="text/css">
     .modal {display: block;}
   </style>
@@ -11,7 +12,7 @@
 <body ng-app="SchoolApp">
   <nav class="navbar navbar-inverse" role="navigation">
     <ul class="nav navbar-nav">
-      <li><a href="/">Main</a></li>
+      <li><a href="/calendar">Main</a></li>
       <li><a href="/panel">Control Panel</a></li>
     </ul>
   </nav>
@@ -19,10 +20,15 @@
     <ng-view></ng-view>
   </div>
   <script src="/bower_components/momentjs/moment.js"></script>
+  <script src="/bower_components/underscore/underscore.js"></script>
+  <script src="/bower_components/jquery/jquery.js"></script>
+  <script src="/bower_components/jquery-ui/ui/jquery-ui.js"></script>
   <script src="/bower_components/angular/angular.js"></script>
   <script src="/bower_components/angular-ui-bootstrap-bower/ui-bootstrap.js"></script>
   <script src="/bower_components/angular-mocks/angular-mocks.js"></script>
-  <script src="/bower_components/jquery/jquery.js"></script>
+  <script src="/bower_components/fullcalendar/fullcalendar.js"></script>
+  <script src="/bower_components/fullcalendar/gcal.js"></script>
+  <script src="/bower_components/angular-ui-calendar/src/calendar.js"></script>
   <script src="/js/ng-app.js"></script>
 </body>
 </html>

@@ -8,10 +8,12 @@ module.exports = function(config) {
     // list of files / patterns to load in the browser
     files: [
       'public/bower_components/momentjs/moment.js',
+      'public/bower_components/underscore/underscore.js',
       'public/bower_components/jquery/jquery.js',
       'public/bower_components/angular/angular.js',
       'public/bower_components/angular-mocks/angular-mocks.js',
       'public/bower_components/angular-ui-bootstrap-bower/ui-bootstrap.js',
+      'public/bower_components/angular-ui-calendar/src/calendar.js',
       'public/js/ng-app.js',
       'test/**/*.js'
     ],

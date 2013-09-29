@@ -1,4 +1,4 @@
-angular.module('SchoolApp', ['ui.bootstrap'])
+angular.module('SchoolApp', ['ui.bootstrap', 'ui.calendar'])
   .config(function($routeProvider, $locationProvider) {
     'use strict';
     $routeProvider
@@ -9,6 +9,10 @@ angular.module('SchoolApp', ['ui.bootstrap'])
     .when('/assignments/:className', {
       controller: 'AssignmentCtrl',
       templateUrl: '/app/templates/assignments.html' 
+    })
+    .when('/calendar', {
+      controller: 'CalendarCtrl',
+      templateUrl: '/app/templates/calendar.html'
     })
     ;
     $locationProvider.html5Mode(true);
@@ -52,6 +56,24 @@ angular.module('SchoolApp')
           }); 
       }  
     };
+  });
+angular.module('SchoolApp')
+  .controller('CalendarCtrl', function($scope) {
+    $scope.uiConfig = {
+      calendar:{
+        height: 450,
+        editable: true,
+        header:{
+          left: 'month basicWeek basicDay agendaWeek agendaDay',
+          center: 'title',
+          right: 'today prev,next'
+        },
+        dayClick: $scope.alertEventOnClick,
+        eventDrop: $scope.alertOnDrop,
+        eventResize: $scope.alertOnResize
+      }
+    };
+    $scope.eventSources=[];
   });
 angular.module('SchoolApp')
   .controller('AddAssignmentsCtrl', function($scope, dialog, $course, $http, $mode, $from, $window) {
@@ -145,6 +167,34 @@ angular.module('SchoolApp')
       console.log('here');  
     };
     */
+  });
+angular.module('SchoolApp')
+  .controller('WeekCtrl', function($scope) {
+    function numFromSunday(now) {
+      var compute = {
+        Sunday: 0,
+        Monday: -1,
+        Tuesday: -2,
+        Wednesday: -3,
+        Thursday: -4,
+        Friday: -5,
+        Saturday: -6
+      };
+      var day = now.format('dddd');
+      return compute[day]; 
+    }
+    function fillWeekArray() {
+      var now = moment(); 
+      var minus = numFromSunday(now);
+      var sunday = now.add('days', minus);
+      var week = _.times(7, function(i) {
+        var day = moment(sunday);
+        sunday.add('days', 1);
+        return day;
+      });
+      return week; 
+    }
+    $scope.week = fillWeekArray(); 
   });
 angular.module('SchoolApp')
   .directive('formatDate', function() {
