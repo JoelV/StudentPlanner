@@ -10,10 +10,6 @@ angular.module('SchoolApp', ['ui.bootstrap', 'ui.calendar'])
       controller: 'AssignmentCtrl',
       templateUrl: '/app/templates/assignments.html' 
     })
-    .when('/calendar', {
-      controller: 'CalendarCtrl',
-      templateUrl: '/app/templates/calendar.html'
-    })
     .when('/' , {
       controller: 'CalendarCtrl',
       templateUrl: '/app/templates/calendar.html'
