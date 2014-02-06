@@ -9,11 +9,11 @@ module.exports = function(grunt) {
         dest: 'public/js/ng-app.js'
       }
     },
-    connect: {
+    express: {
       server: {
         options: {
-          port: 3000,
-          base: '.'
+          port: 8000,
+          server: 'app'
         }
       }
     },
@@ -24,7 +24,7 @@ module.exports = function(grunt) {
     karma: {
       options: {
         configFile: 'karma.conf.js',
-        browsers: ['Firefox']
+        browsers: ['Chrome']
       },
       continuous: {
         singleRun: true,
@@ -40,8 +40,8 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.loadNpmTasks('grunt-contrib-connect');
+  grunt.loadNpmTasks('grunt-express');
 
   grunt.registerTask('default', ['jshint']);
-  grunt.registerTask('server', ['karma:dev', 'connect', 'watch']);
+  grunt.registerTask('server', ['karma:dev', 'express', 'watch']);
 };

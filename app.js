@@ -3,6 +3,7 @@ var express = require('express');
 var _ = require('underscore');
 
 var app = express();
+var server = require('http').createServer(app);
 var studentplannerdb = nano('http://localhost:5984/studentplannerdb');
 
 app.configure(function() {
@@ -58,5 +59,9 @@ app.get('/app/templates/*', function(req, res) {
 app.get('/*', function(req, res) {
   res.sendfile(__dirname + '/public/index.html');
 });
-app.listen(1337);
-console.log('Listening on port 1337');
+
+exports = module.exports = server;
+
+exports.use = function() {
+  app.use.apply(app, arguments);
+};
