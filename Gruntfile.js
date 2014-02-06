@@ -10,7 +10,7 @@ module.exports = function(grunt) {
       }
     },
     express: {
-      server: {
+      load: {
         options: {
           port: 8000,
           server: 'app'
@@ -28,6 +28,7 @@ module.exports = function(grunt) {
       },
       continuous: {
         singleRun: true,
+        reporters: 'dots',
         browsers: ['PhantomJS']
       },
       dev: {
