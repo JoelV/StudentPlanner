@@ -1,10 +1,11 @@
 var nano = require('nano');
 var express = require('express');
 var _ = require('underscore');
+var config = require('./config.js');
 
 var app = express();
 var server = require('http').createServer(app);
-var studentplannerdb = nano('http://localhost:5984/studentplannerdb');
+var studentplannerdb = nano(config.COUCHDB);
 
 app.configure(function() {
   app.use(express.static('./public'));

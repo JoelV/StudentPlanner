@@ -13,7 +13,7 @@
           </div> 
           <div class="form-group"  ng-class="{'has-success': addForm.date.$valid, 'has-error': addForm.date.$invalid}">
             <label>Due Date</label>
-            <input class="form-control" type="date" ng-model="assignment.date"
+            <input class="form-control" type="text" ng-model="assignment.date"
                    name="date" placeholder="MM-DD-YYYY" format-date="-" 
                    valid-date="-" required>
           </div>
