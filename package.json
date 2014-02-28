@@ -31,7 +31,7 @@
   "author": "JoelV",
   "license": "BSD-2-Clause",
   "devDependencies": {
-    "grunt-express-server": "^0.4.13",
+    "grunt-express-server": "~0.4.13",
     "grunt": "0.4.0"
   }
 }
