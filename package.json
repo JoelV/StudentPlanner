@@ -25,13 +25,13 @@
     "underscore": "~1.5.2",
     "http": "0.0.0"
   },
-  "devDependencies": {
-    "grunt-express": "~1.2.1"
-  },
   "scripts": {
     "start": "node server.js",
     "test": "grunt karma:continuous"
   },
   "author": "JoelV",
-  "license": "BSD-2-Clause"
+  "license": "BSD-2-Clause",
+  "devDependencies": {
+    "grunt-express-server": "^0.4.13"
+  }
 }

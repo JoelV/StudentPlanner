@@ -1,20 +1,14 @@
 angular.module('SchoolApp')
-  .controller('EditAssignmentsCtrl', function($scope, dialog, $mode, $assignment, $http, $window) {
-    $scope.mode = $mode.getMode();
-    $scope.assignment = $assignment.getAssignment();
+  .controller('EditAssignmentsCtrl', function($scope, $modalInstance, mode, assignment, $http, $window) {
+    $scope.mode = mode;
+    $scope.assignment = assignment;
 
     $scope.close = function() {
-      dialog.close();
+      $modalInstance.close();
     };
 
     //save button
     $scope.add = function(assignment) {
-      //var date = moment(assignment.date).toISOString();
-      //assignment.date = date;
-      $http.put('/api/assignment/edit', assignment)
-        .success(function() {
-          dialog.close();
-          $window.location.href = '/assignments/' + $scope.assignment.course.name + '-' + $scope.assignment.course.number;
-        });
+      $modalInstance.close(assignment);
     };
   });

@@ -11,9 +11,12 @@ module.exports = function(config) {
       'public/bower_components/underscore/underscore.js',
       'public/bower_components/jquery/jquery.js',
       'public/bower_components/angular/angular.js',
+      'public/bower_components/angular-route/angular-route.js',
       'public/bower_components/angular-mocks/angular-mocks.js',
-      'public/bower_components/angular-ui-bootstrap-bower/ui-bootstrap.js',
+      'public/bower_components/angular-bootstrap/ui-bootstrap.js',
       'public/bower_components/angular-ui-calendar/src/calendar.js',
+      'public/bower_components/fullcalendar/fullcalendar.js',
+      'public/bower_components/fullcalendar/gcal.js',
       'public/js/ng-app.js',
       'test/**/*.js'
     ],
@@ -44,7 +47,7 @@ module.exports = function(config) {
 
     // enable / disable watching file and executing tests whenever any file changes
     // CLI --auto-watch --no-auto-watch
-    autoWatch: true,
+    autoWatch: false,
 
     // Start these browsers, currently available:
     // - Chrome
@@ -63,7 +66,7 @@ module.exports = function(config) {
 
     // Auto run tests on start (when browsers are captured) and exit
     // CLI --single-run --no-single-run
-    singleRun: false,
+    singleRun: false
 
     // report which specs are slower than 500ms
     // CLI --report-slower-than 500

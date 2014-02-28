@@ -1,4 +1,4 @@
 module.exports = {
-   COUCHDB: process.env.COUCHDB || 'https://joelv:stuff123@joelv.cloudant.com/schoolplannerdb'
+   COUCHDB: process.env.COUCHDB || 'http://localhost:5984/studentplannerdb'
 };
 

@@ -13,11 +13,16 @@
     "tests"
   ],
   "dependencies": {
-    "angular": "1.0.7",
+    "angular": "~1.2.0",
     "bootstrap": "~3.0.0",
     "momentjs": "~2.2.1",
-    "angular-ui-bootstrap-bower": "0.5.0",
-    "angular-mocks": "~1.0.8",
-    "angular-ui-calender": "0.5.0"
+    "angular-ui-calendar": "latest",
+    "angular-bootstrap": "~0.10.0",
+    "angular-route": "~1.2.13",
+    "angular-mocks": "1.2.13"
+  },
+  "resolutions": {
+    "jquery": "~1.10.2",
+    "angular": "~1.2.x"
   }
 }

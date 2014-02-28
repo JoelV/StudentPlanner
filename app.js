@@ -9,7 +9,7 @@ var studentplannerdb = nano(config.COUCHDB);
 
 app.configure(function() {
   app.use(express.static('./public'));
-  app.use(express.bodyParser());
+  app.use(express.json());
 });
 //api
 app.get('/api/classes', function(req, res) {
@@ -20,7 +20,7 @@ app.put('/api/add/class', function(req, res) {
   studentplannerdb.insert(req.body).pipe(res);
 });
 
-app.put('/api/assignment/add', function(req, res) {
+app.post('/api/assignment/add', function(req, res) {
   studentplannerdb.insert(req.body).pipe(res);
 });
 

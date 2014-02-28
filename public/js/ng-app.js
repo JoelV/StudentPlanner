@@ -1,4 +1,4 @@
-angular.module('SchoolApp', ['ui.bootstrap', 'ui.calendar'])
+angular.module('SchoolApp', ['ui.bootstrap', 'ui.calendar', 'ngRoute'])
   .config(function($routeProvider, $locationProvider) {
     'use strict';
     $routeProvider
@@ -18,8 +18,8 @@ angular.module('SchoolApp', ['ui.bootstrap', 'ui.calendar'])
     $locationProvider.html5Mode(true);
   });
 angular.module('SchoolApp')
-  .controller('AssignmentCtrl', function($scope, $routeParams, $http, $dialog, $mode, $assignment, 
-                                         $from, $course) {
+  .controller('AssignmentCtrl', function($scope, $routeParams, $http, $modal) { 
+                                      
     $scope.className = $routeParams.className;
     $scope.sort='date';
     $http.get('/api/assignment/list/' + $routeParams.className)
@@ -27,12 +27,21 @@ angular.module('SchoolApp')
         $scope.assignmentList = assignmentList;
       });
     $scope.edit = function(assignment) {
-      $mode.setMode('Edit');
-      $assignment.setAssignment(assignment);
-      $dialog.dialog().open(
-        '../app/templates/dialogs/assignmentsForm.html',
-        'EditAssignmentsCtrl'
-        );   
+      $modal.open({
+        templateUrl: '../app/templates/dialogs/assignmentsForm.html',
+        controller: 'EditAssignmentsCtrl',
+        resolve: {
+          assignment: function() { return assignment; },
+          mode: function() { return 'Edit'; }
+        }
+        }).result.then(function(editedAssignment) {
+          if(editedAssignment) {
+            $http.put('/api/assignment/edit', editedAssignment).success(function(result) {
+              angular.extend(editedAssignment, { _rev: result.rev });
+              assignment = angular.copy(editedAssignment);
+            });
+          }
+        });   
     };
     $scope.addAssignments = function() {
       var course = $routeParams.className;
@@ -40,13 +49,15 @@ angular.module('SchoolApp')
       var c = {};
       c.name = courseArry[0];
       c.number = courseArry[1];
-      $course.setCourse(c);
-      $mode.setMode('Add');
-      $from.setFrom('assignments');
-      $dialog.dialog().open(
-        '../app/templates/dialogs/assignmentsForm.html',
-        'AddAssignmentsCtrl'
-        );
+      
+      $modal.open({
+        templateUrl: '../app/templates/dialogs/assignmentsForm.html',
+        controller: 'AddAssignmentsCtrl',
+        resolve: {
+          course: function() { return c; },
+          mode: function() { return 'Add'; }
+        }
+      });
     };
     $scope.delete = function(assignment, index) {
       if(confirm('Are you sure?')) {
@@ -92,78 +103,80 @@ angular.module('SchoolApp')
     $scope.eventSources=[events];
   });
 angular.module('SchoolApp')
-  .controller('AddAssignmentsCtrl', function($scope, dialog, $course, $http, $mode, $from, $window) {
-    $scope.course = $course.getCourse();
-    $scope.mode = $mode.getMode();
+  .controller('AddAssignmentsCtrl', function($scope, $modalInstance, course, mode, $from, $window) {
+    $scope.mode = mode;
     $scope.close = function() {
-      dialog.close();
+      $modalInstance.close();
       if($from.getFrom() === 'assignments')  
         $window.location.href = '/assignments/' + $scope.course.name + '-' + $scope.course.number;
     };
 
     $scope.add = function(assignment) {
       assignment.course = {};
-      assignment.course.name = $scope.course.name;
-      assignment.course.number = $scope.course.number; 
+      assignment.course.name = course.name;
+      assignment.course.number = course.number; 
       assignment.type = 'assignment';
       var date = moment(assignment.date, 'MM-DD-YYYY').toISOString();
       assignment.date = date;
-      $http.put('/api/assignment/add', assignment)
-        .success(function() {
-          $scope.assignment.name = "";
-          $scope.assignment.date = "";
-        });
+      $modalInstance.close(assignment);
     };
   });
 angular.module('SchoolApp')
-  .controller('AddClassCtrl', function($scope, $http, dialog, $window) {
+  .controller('AddClassCtrl', function($scope, $http, $modalInstance, $window) {
     $scope.add = function(course) {
       course.type = "class";
-      $http.put('/api/add/class', course)
-        .success(function() {
-          dialog.close(); 
-          $window.location.href = '/panel';
-        });
+      $modalInstance.close(course);
+      // $http.put('/api/add/class', course)
+      //   .success(function() {
+      //     dialog.close(); 
+      //     $window.location.href = '/panel';
+      //   });
     }; 
     $scope.cancel = function() {
-      dialog.close();
-      $window.location.href = '/panel';
+      $modalInstance.close();
+      //$window.location.href = '/panel';
     }; 
   });
 angular.module('SchoolApp')
-  .controller('EditAssignmentsCtrl', function($scope, dialog, $mode, $assignment, $http, $window) {
-    $scope.mode = $mode.getMode();
-    $scope.assignment = $assignment.getAssignment();
+  .controller('EditAssignmentsCtrl', function($scope, $modalInstance, mode, assignment, $http, $window) {
+    $scope.mode = mode;
+    $scope.assignment = assignment;
 
     $scope.close = function() {
-      dialog.close();
+      $modalInstance.close();
     };
 
     //save button
     $scope.add = function(assignment) {
-      //var date = moment(assignment.date).toISOString();
-      //assignment.date = date;
-      $http.put('/api/assignment/edit', assignment)
-        .success(function() {
-          dialog.close();
-          $window.location.href = '/assignments/' + $scope.assignment.course.name + '-' + $scope.assignment.course.number;
-        });
+      $modalInstance.close(assignment);
     };
   });
 angular.module('SchoolApp')
-  .controller('PanelCtrl', function($scope, $http, $dialog, $window, $course, $mode) {
+  .controller('PanelCtrl', function($scope, $http, $modal, $window, $course, $mode) {
     $http.get('/api/course/list')
       .success(function(courseList) {
         $scope.courseList = courseList;
       });
     $scope.addClass = function() {
-      $dialog.dialog().open(
-        'app/templates/dialogs/addClass.html',
-        'AddClassCtrl'
-        );
+      var modalOptions = {
+        templateUrl: 'app/templates/dialogs/addClass.html',
+        controller: 'AddClassCtrl'
+      };
+
+      $modal.open(modalOptions).result.then(function(addCourse) {
+        $http.put('/api/add/class', addCourse)
+          .success(function(result) {
+            //TODO alerts
+            angular.extend(addCourse, {_id: result.id, _rev: result.rev});
+            $scope.courseList.push(addCourse);
+          })
+          .error(function(err) {
+            console.log(err);
+          });
+      });
     };
     $scope.remove = function(course, index) {
-      if(confirm("Are you sure?")) {
+      if($window.confirm("Are you sure?")) {
         $http['delete']('/api/course/delete/' + course._id, {params: {rev: course._rev}})
           .success(function() {
             $scope.courseList.splice(index, 1);
@@ -171,12 +184,25 @@ angular.module('SchoolApp')
       }
     };
     $scope.addAssignments = function(course) {
-      $course.setCourse(course);
-      $mode.setMode('Add');
-      $dialog.dialog().open(
-        'app/templates/dialogs/assignmentsForm.html',
-        'AddAssignmentsCtrl'
-        );
+      $modal.open({
+        templateUrl: 'app/templates/dialogs/assignmentsForm.html',
+        controller: 'AddAssignmentsCtrl',
+        resolve: {
+          course: function() { return course; },
+          mode: function() { return "Add"; }
+        }
+      }).result.then(function(result){
+        $http.post('/api/assignment/add', result)
+          .success(function(res) {
+            //TODO alerts
+            console.log(res);
+            //$scope.assignment.name = "";
+            //$scope.assignment.date = "";
+          })
+          .error(function(res) {
+            console.log(res);  
+          });
+      });
     };
     /*
     $scope.listCourse = function(course) {

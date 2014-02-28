@@ -1,4 +1,4 @@
-angular.module('SchoolApp', ['ui.bootstrap', 'ui.calendar'])
+angular.module('SchoolApp', ['ui.bootstrap', 'ui.calendar', 'ngRoute'])
   .config(function($routeProvider, $locationProvider) {
     'use strict';
     $routeProvider

@@ -1,6 +1,6 @@
 angular.module('SchoolApp')
-  .controller('AssignmentCtrl', function($scope, $routeParams, $http, $dialog, $mode, $assignment, 
-                                         $from, $course) {
+  .controller('AssignmentCtrl', function($scope, $routeParams, $http, $modal) { 
+                                      
     $scope.className = $routeParams.className;
     $scope.sort='date';
     $http.get('/api/assignment/list/' + $routeParams.className)
@@ -8,12 +8,21 @@ angular.module('SchoolApp')
         $scope.assignmentList = assignmentList;
       });
     $scope.edit = function(assignment) {
-      $mode.setMode('Edit');
-      $assignment.setAssignment(assignment);
-      $dialog.dialog().open(
-        '../app/templates/dialogs/assignmentsForm.html',
-        'EditAssignmentsCtrl'
-        );   
+      $modal.open({
+        templateUrl: '../app/templates/dialogs/assignmentsForm.html',
+        controller: 'EditAssignmentsCtrl',
+        resolve: {
+          assignment: function() { return assignment; },
+          mode: function() { return 'Edit'; }
+        }
+        }).result.then(function(editedAssignment) {
+          if(editedAssignment) {
+            $http.put('/api/assignment/edit', editedAssignment).success(function(result) {
+              angular.extend(editedAssignment, { _rev: result.rev });
+              assignment = angular.copy(editedAssignment);
+            });
+          }
+        });   
     };
     $scope.addAssignments = function() {
       var course = $routeParams.className;
@@ -21,13 +30,15 @@ angular.module('SchoolApp')
       var c = {};
       c.name = courseArry[0];
       c.number = courseArry[1];
-      $course.setCourse(c);
-      $mode.setMode('Add');
-      $from.setFrom('assignments');
-      $dialog.dialog().open(
-        '../app/templates/dialogs/assignmentsForm.html',
-        'AddAssignmentsCtrl'
-        );
+      
+      $modal.open({
+        templateUrl: '../app/templates/dialogs/assignmentsForm.html',
+        controller: 'AddAssignmentsCtrl',
+        resolve: {
+          course: function() { return c; },
+          mode: function() { return 'Add'; }
+        }
+      });
     };
     $scope.delete = function(assignment, index) {
       if(confirm('Are you sure?')) {

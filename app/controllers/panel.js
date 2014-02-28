@@ -1,17 +1,29 @@
 angular.module('SchoolApp')
-  .controller('PanelCtrl', function($scope, $http, $dialog, $window, $course, $mode) {
+  .controller('PanelCtrl', function($scope, $http, $modal, $window, $course, $mode) {
     $http.get('/api/course/list')
       .success(function(courseList) {
         $scope.courseList = courseList;
       });
     $scope.addClass = function() {
-      $dialog.dialog().open(
-        'app/templates/dialogs/addClass.html',
-        'AddClassCtrl'
-        );
+      var modalOptions = {
+        templateUrl: 'app/templates/dialogs/addClass.html',
+        controller: 'AddClassCtrl'
+      };
+
+      $modal.open(modalOptions).result.then(function(addCourse) {
+        $http.put('/api/add/class', addCourse)
+          .success(function(result) {
+            //TODO alerts
+            angular.extend(addCourse, {_id: result.id, _rev: result.rev});
+            $scope.courseList.push(addCourse);
+          })
+          .error(function(err) {
+            console.log(err);
+          });
+      });
     };
     $scope.remove = function(course, index) {
-      if(confirm("Are you sure?")) {
+      if($window.confirm("Are you sure?")) {
         $http['delete']('/api/course/delete/' + course._id, {params: {rev: course._rev}})
           .success(function() {
             $scope.courseList.splice(index, 1);
@@ -19,12 +31,25 @@ angular.module('SchoolApp')
       }
     };
     $scope.addAssignments = function(course) {
-      $course.setCourse(course);
-      $mode.setMode('Add');
-      $dialog.dialog().open(
-        'app/templates/dialogs/assignmentsForm.html',
-        'AddAssignmentsCtrl'
-        );
+      $modal.open({
+        templateUrl: 'app/templates/dialogs/assignmentsForm.html',
+        controller: 'AddAssignmentsCtrl',
+        resolve: {
+          course: function() { return course; },
+          mode: function() { return "Add"; }
+        }
+      }).result.then(function(result){
+        $http.post('/api/assignment/add', result)
+          .success(function(res) {
+            //TODO alerts
+            console.log(res);
+            //$scope.assignment.name = "";
+            //$scope.assignment.date = "";
+          })
+          .error(function(res) {
+            console.log(res);  
+          });
+      });
     };
     /*
     $scope.listCourse = function(course) {
