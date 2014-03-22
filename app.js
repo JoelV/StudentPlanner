@@ -27,6 +27,7 @@ app.post('/api/assignment/add', function(req, res) {
 app.get('/api/course/list', function(req, res) {
   studentplannerdb.view('classList', 'all', function(err, body) {
     if(err) { res.send(500, err); }
+    console.log(body);
     res.send(200, _.pluck(body.rows,'value'));
   });
 });

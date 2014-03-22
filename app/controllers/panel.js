@@ -51,9 +51,4 @@ angular.module('SchoolApp')
           });
       });
     };
-    /*
-    $scope.listCourse = function(course) {
-      console.log('here');  
-    };
-    */
   });

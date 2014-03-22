@@ -12,12 +12,11 @@
         <th>Delete</th>
       </tr>
       <tr ng-repeat="course in courseList">
-        <td><a ng-href="/assignments/{{course.name + '-' + course.number}}">
+        <td>
             {{course.name + " " + course.number}}
-          </a>
         </td>
         <td>{{course.description}}</td>
-        <td><button class="btn" ng-click="addAssignments(course)">Add Assignments</button></td>
+        <td><a class="btn btn-success" href="/assignments/{{course.name + '-' + course.number}}">View Assignments</a></td>
         <td><button class="btn btn-danger" ng-click="remove(course, $index)">Delete</button></td>
       </tr>
     </table> 
