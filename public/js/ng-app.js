@@ -1,22 +1,23 @@
-angular.module('SchoolApp', ['ui.bootstrap', 'ui.calendar', 'ngRoute'])
-  .config(function($routeProvider, $locationProvider) {
-    'use strict';
-    $routeProvider
-    .when('/panel', {
-      controller: 'PanelCtrl',
-      templateUrl: '/app/templates/panel.html'
-    })
-    .when('/assignments/:className', {
-      controller: 'AssignmentCtrl',
-      templateUrl: '/app/templates/assignments.html' 
-    })
-    .when('/' , {
-      controller: 'CalendarCtrl',
-      templateUrl: '/app/templates/calendar.html'
-    })
-    ;
-    $locationProvider.html5Mode(true);
-  });
+var app = angular.module('SchoolApp', ['ui.bootstrap', 'ui.calendar', 'ngRoute']);
+app.config(function($routeProvider, $locationProvider) {
+  'use strict';
+  $routeProvider
+  .when('/panel', {
+    controller: 'PanelCtrl',
+    templateUrl: '/app/templates/panel.html'
+  })
+  .when('/assignments/:className', {
+    controller: 'AssignmentCtrl',
+    templateUrl: '/app/templates/assignments.html' 
+  })
+  .when('/' , {
+    controller: 'CalendarCtrl',
+    templateUrl: '/app/templates/calendar.html'
+  })
+  ;
+  $locationProvider.html5Mode(true);
+})
+;
 angular.module('SchoolApp')
   .controller('AssignmentCtrl', function($scope, $routeParams, $http, $modal) { 
                                       
@@ -68,8 +69,7 @@ angular.module('SchoolApp')
       }  
     };
   });
-angular.module('SchoolApp')
-  .controller('CalendarCtrl', function($scope, $http) {
+app.controller('CalendarCtrl', function($scope, $http, $modal) {
     function buildEventsArray() {
       var assignmentEvents = [];
       $http.get('/api/assignments/all')
@@ -85,6 +85,32 @@ angular.module('SchoolApp')
       return assignmentEvents;      
     }
     $scope.eventChanged = 0;
+
+    var addAssignment = function(date, allDay, jsEvent, view) {
+      var config = {
+        templateUrl: '/app/templates/dialogs/addAssignmentsForm.html',
+        controller: 'AddAssignmentsFormCtrl', 
+        resolve: {
+          date: function() { return date; }
+        }  
+      };
+      $modal.open(config).result.then(function(assignment) {
+        if(assignment) {
+          $http.post('/api/assignment/add', assignment).success(function(result) {
+            angular.extend(assignment, { 
+              _id: result.id,
+              _rev: result.rev
+            });
+          });
+          events.push({
+            title: 'Course: ' + assignment.name,
+            start: assignment.date || assignment.time,
+            allDay: false
+          });
+        }
+      });
+    };
+
     $scope.uiConfig = {
       calendar:{
         height: 600,
@@ -94,9 +120,17 @@ angular.module('SchoolApp')
           center: 'title',
           right: 'today prev,next'
         },
-        dayClick: $scope.alertEventOnClick,
-        eventDrop: $scope.alertOnDrop,
-        eventResize: $scope.alertOnResize
+        dayClick: addAssignment,
+        eventClick: function(calEvent, jsEvent, view) {
+          console.log("calEvent:", calEvent);
+          alert('Event: ' + calEvent.title);
+          alert('Coordinates: ' + jsEvent.pageX + ',' + jsEvent.pageY);
+          alert('View: ' + view.name);
+
+          // change the border color just for fun
+          //$(this).css('border-color', 'red');
+
+        }
       }
     };
     var events = buildEventsArray();
@@ -121,6 +155,29 @@ angular.module('SchoolApp')
       $modalInstance.close(assignment);
     };
   });
+app.controller('AddAssignmentsFormCtrl', function($scope, $modalInstance, date, $http, $_, $moment) {
+  $scope.dateStr = $moment(date).format('MM/DD/YYYY');
+  $http.get('/api/course/list').success(function(results) {
+    $scope.courseList = results;
+  });
+
+
+  function buildEventTime(tempDate) {
+    var momentDate = $moment(tempDate);
+    var hr = momentDate.hour();
+    var min = momentDate.minute();
+    return moment(date).hour(hr).minute(min).toDate();
+  }
+
+  $scope.save = function(assignment) {
+    assignment.time = buildEventTime(assignment.time);
+    $modalInstance.close(assignment);
+  };
+
+  $scope.cancel = function() {
+    $modalInstance.close();
+  };
+});
 angular.module('SchoolApp')
   .controller('AddClassCtrl', function($scope, $http, $modalInstance, $window) {
     $scope.add = function(course) {
@@ -204,34 +261,6 @@ angular.module('SchoolApp')
           });
       });
     };
-  });
-angular.module('SchoolApp')
-  .controller('WeekCtrl', function($scope) {
-    function numFromSunday(now) {
-      var compute = {
-        Sunday: 0,
-        Monday: -1,
-        Tuesday: -2,
-        Wednesday: -3,
-        Thursday: -4,
-        Friday: -5,
-        Saturday: -6
-      };
-      var day = now.format('dddd');
-      return compute[day]; 
-    }
-    function fillWeekArray() {
-      var now = moment(); 
-      var minus = numFromSunday(now);
-      var sunday = now.add('days', minus);
-      var week = _.times(7, function(i) {
-        var day = moment(sunday);
-        sunday.add('days', 1);
-        return day;
-      });
-      return week; 
-    }
-    $scope.week = fillWeekArray(); 
   });
 angular.module('SchoolApp')
   .directive('formatDate', function() {
@@ -334,3 +363,9 @@ angular.module('SchoolApp')
       }
     };
   });
+app.factory('$moment', function() {
+  return moment;
+});
+app.factory('$_', function() {
+  return _;
+});
