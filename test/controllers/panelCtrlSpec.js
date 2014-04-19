@@ -41,7 +41,7 @@ describe('Controller: PanelCtrl', function() {
       scope.remove(scope.courseList[0]);
       httpBackend.flush();
       expect(scope.courseList.length).toBe(2); 
-      expect(scope.courseList[0].name).toEqual('IST');
+      expect(scope.courseList[0].name).toEqual('blah');
       
     });
   });
