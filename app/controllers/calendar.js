@@ -7,7 +7,8 @@ app.controller('CalendarCtrl', function($scope, $http, $modal) {
           _.each($scope.assignments, function(assignment, index) {
             assignmentEvents.push({
               title: assignment.course.name + '-' + assignment.course.number + ' ' + assignment.name,
-              start: assignment.date
+              start: assignment.date,
+              allDay: false
             });
           });
         });
@@ -30,11 +31,11 @@ app.controller('CalendarCtrl', function($scope, $http, $modal) {
               _id: result.id,
               _rev: result.rev
             });
-          });
-          events.push({
-            title: 'Course: ' + assignment.name,
-            start: assignment.date || assignment.time,
-            allDay: false
+            events.push({
+              title: [assignment.course.name, '-', assignment.course.number, ': ', assignment.name].join(''),
+              start: assignment.date,
+              allDay: false
+            });
           });
         }
       });

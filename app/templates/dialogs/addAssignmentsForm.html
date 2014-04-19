@@ -3,10 +3,10 @@
 </div>
 <div class="modal-body">
   <p>Choose Class</p>
-  <select ng-model="assignment.courseId" class="form-control" style="width:110px"
-    ng-options="course._id as course.name +'-'+ course.number for course in courseList">
+  <select ng-model="assignment.course" class="form-control" style="width:110px"
+    ng-options="course.name +'-'+ course.number for course in courseList">
   </select>
-  <form ng-if="assignment.courseId">
+  <form ng-if="assignment.course">
     <p>Assignment Name</p>
     <input ng-model="assignment.name" placeholder="Quiz Chapter 1">
     <p>Time</p>

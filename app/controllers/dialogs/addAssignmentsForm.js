@@ -13,7 +13,13 @@ app.controller('AddAssignmentsFormCtrl', function($scope, $modalInstance, date, 
   }
 
   $scope.save = function(assignment) {
-    assignment.time = buildEventTime(assignment.time);
+    var courseObj = { 
+      name: assignment.course.name,
+      number: assignment.course.number
+    };
+    assignment.course = courseObj; 
+    assignment.date = buildEventTime(assignment.time);
+    assignment.type = 'assignment';
     $modalInstance.close(assignment);
   };
 

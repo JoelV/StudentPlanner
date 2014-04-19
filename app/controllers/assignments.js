@@ -1,5 +1,5 @@
 angular.module('SchoolApp')
-  .controller('AssignmentCtrl', function($scope, $routeParams, $http, $modal) { 
+  .controller('AssignmentCtrl', function($scope, $routeParams, $http, $modal, $_) { 
                                       
     $scope.className = $routeParams.className;
     $scope.sort='date';
@@ -38,13 +38,23 @@ angular.module('SchoolApp')
           course: function() { return c; },
           mode: function() { return 'Add'; }
         }
+      }).result.then(function(newAssignment) {
+        if(newAssignment) {
+          $http.post('/api/assignment/add', newAssignment).success(function(result) {
+            angular.extend(newAssignment, { 
+              _id: result.id,
+              _rev: result.rev
+            });
+            $scope.assignmentList.push(newAssignment);
+          });
+        }  
       });
     };
-    $scope.delete = function(assignment, index) {
+    $scope.delete = function(assignment) {
       if(confirm('Are you sure?')) {
         $http['delete']('/api/assignment/delete/' + assignment._id, {params: {rev: assignment._rev}})
-          .success(function() {
-            $scope.assignmentList.splice(index, 1);
+          .success(function(result) {
+            $scope.assignmentList = $_.without($scope.assignmentList, assignment);
           }); 
       }  
     };

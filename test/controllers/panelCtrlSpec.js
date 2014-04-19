@@ -25,21 +25,23 @@ describe('Controller: PanelCtrl', function() {
       init();
       expect(scope.courseList).toEqual(getCourseList());
     });
-  })
+  });
   describe('remove:', function() {
     it('should remove from the courseList when removed is called', function() {
       init();
-      httpBackend.whenDELETE('/api/course/delete/0002?rev=1002').respond(200);
-      scope.remove({
-        name: 'ENG',
-        number: '101',
-        description:'Composiition 1',
-        type: 'class',
-        _id: '0002',
-        _rev: '1002'
-      }, 2);
+      httpBackend.whenDELETE('/api/course/delete/0000?rev=1000').respond(200);
+      // scope.remove({
+      //   name: 'ENG',
+      //   number: '101',
+      //   description:'Composiition 1',
+      //   type: 'class',
+      //   _id: '0002',
+      //   _rev: '1002'
+      // });
+      scope.remove(scope.courseList[0]);
       httpBackend.flush();
-      expect(scope.courseList.length).toBe(2); expect(scope.courseList[1].name).toEqual('IST');
+      expect(scope.courseList.length).toBe(2); 
+      expect(scope.courseList[0].name).toEqual('IST');
       
     });
   });
